@@ -1,1 +1,3 @@
 learning git very well so i can be good at version control
+
+new commit has been added 
