@@ -4,3 +4,5 @@ new commit has been added
 
 
 am on the branch now 
+
+adding www.readme to the git file
