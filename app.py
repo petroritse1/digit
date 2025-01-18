@@ -4,7 +4,15 @@ import io
 from PIL import Image
 from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Access the api keys
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+STABILITY_API_KEY = os.getenv("STABILITY_API_KEY")
 
 # Function to generate a prompt from the google gemini API
 @st.cache_data
@@ -49,23 +57,21 @@ def main():
     st.title("Text-to-Image Thumbnail Generator")
     st.write("Generate an image using Google Gemini 2.0 and Stability AI.")
 
-    gemini_api_key = st.text_input("Enter your Google Gemini API Key", type="password")
-    stability_api_key = st.text_input("Enter your Stability AI API Key", type="password")
     prompt = st.text_input("Enter a text prompt for the image")
 
     if st.button("Generate Image"):
-         if not gemini_api_key:
-            st.error("Please enter your Google Gemini API key")
-         elif not stability_api_key:
-            st.error("Please enter your Stability AI API key")
-         elif not prompt:
-            st.error("Please enter a prompt for the image")
-         else:
+        if not GEMINI_API_KEY:
+           st.error("Google Gemini API Key is missing, Please check the .env file")
+        elif not STABILITY_API_KEY:
+            st.error("Stability API key is missing, Please check the .env file")
+        elif not prompt:
+             st.error("Please enter a prompt for the image")
+        else:
             with st.spinner("Generating prompt using Gemini..."):
-                  gemini_prompt = generate_gemini_prompt(prompt, gemini_api_key)
+                  gemini_prompt = generate_gemini_prompt(prompt, GEMINI_API_KEY)
                   if gemini_prompt:
                      with st.spinner("Generating image with stability AI.."):
-                            image = generate_image(gemini_prompt, stability_api_key)
+                            image = generate_image(gemini_prompt, STABILITY_API_KEY)
 
                             if image:
                                 st.image(image, caption="Generated Image", use_column_width=True)
