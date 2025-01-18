@@ -2,3 +2,4 @@ streamlit
 google-generativeai 
 stability-sdk 
 Pillow
+python-dotenv
